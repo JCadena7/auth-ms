@@ -1,9 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { SignUpUseCase } from './application/use-cases/sign-up.usecase';
+import { SignInUseCase } from './application/use-cases/sign-in.usecase';
+import { CreateUsuarioUseCase } from './application/use-cases/create-usuario.usecase';
+import { SignUpDto } from './application/dto/sign-up.dto';
+import { SignInDto } from './application/dto/sign-in.dto';
+import { CreateUsuarioDto } from './dto/create-usuario.dto';
 
 @Injectable()
 export class AuthsService {
+  constructor(
+    private readonly signUpUseCase: SignUpUseCase,
+    private readonly signInUseCase: SignInUseCase,
+    private readonly createUsuarioUseCase: CreateUsuarioUseCase,
+  ) {}
+
+  // New DDD flows
+  signUp(dto: SignUpDto) {
+    return this.signUpUseCase.exec(dto);
+  }
+
+  signIn(dto: SignInDto) {
+    return this.signInUseCase.exec(dto);
+  }
+
+  createUsuario(dto: CreateUsuarioDto) {
+    return this.createUsuarioUseCase.exec(dto);
+  }
+
+  // Legacy scaffolded methods (kept for compatibility/testing)
   create(createAuthDto: CreateAuthDto) {
     return 'This action adds a new auth';
   }
