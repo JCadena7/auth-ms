@@ -27,6 +27,7 @@ async function bootstrap() {
     }),
   );
 
+  
   await app.listen();
   logger.log(`🚀 auth microdervice running on port ${envs.port}`);
 }
