@@ -4,6 +4,9 @@ import { RbacService } from './rbac.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { CreatePermisoDto } from './dto/create-permiso.dto';
 import { AssignPermisoToRoleDto } from './dto/assign-permiso-to-role.dto';
+import { DeleteByIdDto } from './dto/delete-by-id.dto';
+import { DeleteManyDto } from './dto/delete-many.dto';
+import { RevokeManyPermisosFromRoleDto } from './dto/revoke-many-permisos-from-role.dto';
 
 @Controller()
 export class RbacController {
@@ -20,6 +23,16 @@ export class RbacController {
     return this.rbacService.listRoles();
   }
 
+  @MessagePattern('role.delete')
+  async deleteRole(@Payload() dto: DeleteByIdDto) {
+    return await this.rbacService.deleteRole(dto);
+  }
+
+  @MessagePattern('role.deleteMany')
+  async deleteRoles(@Payload() dto: DeleteManyDto) {
+    return await this.rbacService.deleteRoles(dto);
+  }
+
   // Permisos
   @MessagePattern('permiso.create')
   createPermiso(@Payload() dto: CreatePermisoDto) {
@@ -29,6 +42,16 @@ export class RbacController {
   @MessagePattern('permiso.list')
   listPermisos() {
     return this.rbacService.listPermisos();
+  }
+
+  @MessagePattern('permiso.delete')
+  async deletePermiso(@Payload() dto: DeleteByIdDto) {
+    return await this.rbacService.deletePermiso(dto);
+  }
+
+  @MessagePattern('permiso.deleteMany')
+  async deletePermisos(@Payload() dto: DeleteManyDto) {
+    return await this.rbacService.deletePermisos(dto);
   }
 
   // Role-Permiso assignments
@@ -43,6 +66,11 @@ export class RbacController {
     const respuesta = await this.rbacService.revokePermiso(dto);
     console.log("respuesta de eliminar permisos y roles",respuesta);
     return respuesta;
+  }
+
+  @MessagePattern('rolePermiso.revokeMany')
+  async revokeManyPermisos(@Payload() dto: RevokeManyPermisosFromRoleDto) {
+    return await this.rbacService.revokeManyPermisos(dto);
   }
 
   @MessagePattern('rolePermiso.listByRole')

@@ -7,4 +7,5 @@ export interface RoleRepository {
   findByName(nombre: string): Promise<Role | null>;
   update(id: number, patch: Partial<{ nombre: string; descripcion: string | null }>): Promise<Role | null>;
   remove(id: number): Promise<void>;
+  removeMany(ids: number[]): Promise<number>; // returns number of rows deleted
 }

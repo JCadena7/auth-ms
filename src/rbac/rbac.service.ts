@@ -8,6 +8,9 @@ import { Permiso } from './domain/aggregates/permiso.aggregate';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { CreatePermisoDto } from './dto/create-permiso.dto';
 import { AssignPermisoToRoleDto } from './dto/assign-permiso-to-role.dto';
+import { DeleteByIdDto } from './dto/delete-by-id.dto';
+import { DeleteManyDto } from './dto/delete-many.dto';
+import { RevokeManyPermisosFromRoleDto } from './dto/revoke-many-permisos-from-role.dto';
 
 @Injectable()
 export class RbacService {
@@ -58,5 +61,33 @@ export class RbacService {
   async listPermisosByRole(rolId: number) {
     const ids = await this.rolePermisos.listByRole(rolId);
     return ids;
+  }
+
+  // Deletes - Roles
+  async deleteRole(dto: DeleteByIdDto) {
+    await this.roles.remove(dto.id);
+    return { success: true } as const;
+  }
+
+  async deleteRoles(dto: DeleteManyDto) {
+    const deleted = await this.roles.removeMany(dto.ids);
+    return { deleted } as const;
+  }
+
+  // Deletes - Permisos
+  async deletePermiso(dto: DeleteByIdDto) {
+    await this.permisos.remove(dto.id);
+    return { success: true } as const;
+  }
+
+  async deletePermisos(dto: DeleteManyDto) {
+    const deleted = await this.permisos.removeMany(dto.ids);
+    return { deleted } as const;
+  }
+
+  // Bulk revoke role-permiso
+  async revokeManyPermisos(dto: RevokeManyPermisosFromRoleDto) {
+    const deleted = await this.rolePermisos.revokeMany(dto.rolId, dto.permisoIds);
+    return { deleted } as const;
   }
 }

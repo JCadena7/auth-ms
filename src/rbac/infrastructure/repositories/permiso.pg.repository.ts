@@ -51,4 +51,13 @@ export class PermisoPgRepository implements PermisoRepository {
   async remove(id: number): Promise<void> {
     await this.db.query(`DELETE FROM permisos WHERE id = $1`, [id]);
   }
+
+  async removeMany(ids: number[]): Promise<number> {
+    if (!ids || ids.length === 0) return 0;
+    const rows = await this.db.query<any>(
+      `DELETE FROM permisos WHERE id = ANY($1::int[]) RETURNING id`,
+      [ids],
+    );
+    return rows.length;
+  }
 }

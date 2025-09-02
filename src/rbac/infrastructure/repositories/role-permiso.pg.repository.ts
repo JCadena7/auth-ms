@@ -29,4 +29,13 @@ export class RolePermisoPgRepository implements RolePermisoRepository {
     const rows = await this.db.query<any>(`SELECT permiso_id FROM roles_permisos WHERE rol_id = $1 ORDER BY permiso_id`, [rolId]);
     return rows.map((r) => r.permiso_id as number);
   }
+
+  async revokeMany(rolId: number, permisoIds: number[]): Promise<number> {
+    if (!permisoIds || permisoIds.length === 0) return 0;
+    const rows = await this.db.query<any>(
+      `DELETE FROM roles_permisos WHERE rol_id = $1 AND permiso_id = ANY($2::int[]) RETURNING permiso_id`,
+      [rolId, permisoIds],
+    );
+    return rows.length;
+  }
 }
