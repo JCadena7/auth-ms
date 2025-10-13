@@ -258,3 +258,16 @@ export async function initDatabase() {
 }
 
 export default initDatabase;
+
+// Ejecutar si se llama directamente
+if (require.main === module) {
+  initDatabase()
+    .then((result) => {
+      console.log('✅ Resultado:', result);
+      process.exit(result.success ? 0 : 1);
+    })
+    .catch((error) => {
+      console.error('❌ Error fatal:', error);
+      process.exit(1);
+    });
+}
