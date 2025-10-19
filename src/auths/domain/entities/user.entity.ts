@@ -8,6 +8,7 @@ export class User {
     public readonly firstName: string,
     public readonly lastName: string,
     public readonly rolId: number | null,
+    public readonly rolName: string | null, // role name from roles table
     public readonly avatar: string | null,
     public readonly coverImage: string | null,
     public readonly bio: string | null,

@@ -17,6 +17,7 @@ export class PgUserRepository implements UserRepository {
       row.first_name,
       row.last_name,
       row.rol_id ?? null,
+      row.rol_name ?? null,
       row.avatar ?? null,
       row.cover_image ?? null,
       row.bio ?? null,
@@ -64,27 +65,47 @@ export class PgUserRepository implements UserRepository {
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    const q = this.db.sql`SELECT * FROM usuarios WHERE email = ${email} LIMIT 1`;
+    const q = this.db.sql`
+      SELECT u.*, r.nombre as rol_name 
+      FROM usuarios u
+      LEFT JOIN roles r ON u.rol_id = r.id
+      WHERE u.email = ${email} 
+      LIMIT 1
+    `;
     const rows = await this.db.query(q);
     return rows[0] ? this.rowToUser(rows[0]) : null;
   }
 
   async findByUsername(username: string): Promise<User | null> {
-    const q = this.db.sql`SELECT * FROM usuarios WHERE username = ${username} LIMIT 1`;
+    const q = this.db.sql`
+      SELECT u.*, r.nombre as rol_name 
+      FROM usuarios u
+      LEFT JOIN roles r ON u.rol_id = r.id
+      WHERE u.username = ${username} 
+      LIMIT 1
+    `;
     const rows = await this.db.query(q);
     return rows[0] ? this.rowToUser(rows[0]) : null;
   }
 
   async findByExternalId(externalId: string): Promise<User | null> {
-    const q = this.db.sql`SELECT * FROM usuarios WHERE clerk_id = ${externalId} LIMIT 1`;
+    const q = this.db.sql`
+      SELECT u.*, r.nombre as rol_name 
+      FROM usuarios u
+      LEFT JOIN roles r ON u.rol_id = r.id
+      WHERE u.clerk_id = ${externalId} 
+      LIMIT 1
+    `;
     const rows = await this.db.query(q);
     return rows[0] ? this.rowToUser(rows[0]) : null;
   }
 
   async findByEmailOrUsername(identifier: string): Promise<User | null> {
     const q = this.db.sql`
-      SELECT * FROM usuarios 
-      WHERE email = ${identifier} OR username = ${identifier} 
+      SELECT u.*, r.nombre as rol_name 
+      FROM usuarios u
+      LEFT JOIN roles r ON u.rol_id = r.id
+      WHERE u.email = ${identifier} OR u.username = ${identifier} 
       LIMIT 1
     `;
     const rows = await this.db.query(q);

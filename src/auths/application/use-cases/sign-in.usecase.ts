@@ -45,6 +45,8 @@ export class SignInUseCase {
         firstName: user.firstName,
         lastName: user.lastName,
         rolId: user.rolId,
+        rol: user.rolName,
+        avatar: user.avatar,
       }
     };
   }
