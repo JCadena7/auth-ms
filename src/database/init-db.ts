@@ -1067,6 +1067,7 @@ export async function initDatabaseEnhanced() {
       { nombre: 'crear_categoria', descripcion: 'Crear nuevas categorías' },
       { nombre: 'editar_categoria', descripcion: 'Editar las categorías' },
       { nombre: 'eliminar_categoria', descripcion: 'Elimina la categorías' },
+      { nombre: 'admin_completo', descripcion: 'Acceso completo de administrador al sistema RBAC' },
     ];
     for (const permiso of permisosDefault) {
       const q = sql`INSERT INTO permisos (nombre, descripcion) VALUES (${permiso.nombre}, ${permiso.descripcion}) ON CONFLICT (nombre) DO NOTHING`;
