@@ -796,7 +796,7 @@ export async function initDatabaseEnhanced() {
           SELECT usuario_id, titulo INTO post_author_id, post_titulo
           FROM posts WHERE id = NEW.post_id;
           
-          SELECT nombre INTO commenter_name
+          SELECT COALESCE(NULLIF(TRIM(CONCAT(first_name, ' ', last_name)), ''), username, email) INTO commenter_name
           FROM usuarios WHERE id = NEW.usuario_id;
           
           IF post_author_id != NEW.usuario_id THEN
@@ -832,7 +832,7 @@ export async function initDatabaseEnhanced() {
           SELECT usuario_id, titulo INTO post_author_id, post_titulo
           FROM posts WHERE id = NEW.post_id;
           
-          SELECT nombre INTO liker_name
+          SELECT COALESCE(NULLIF(TRIM(CONCAT(first_name, ' ', last_name)), ''), username, email) INTO liker_name
           FROM usuarios WHERE id = NEW.user_id;
           
           IF post_author_id != NEW.user_id THEN
@@ -863,7 +863,7 @@ export async function initDatabaseEnhanced() {
       DECLARE
           follower_name TEXT;
       BEGIN
-          SELECT nombre INTO follower_name
+          SELECT COALESCE(NULLIF(TRIM(CONCAT(first_name, ' ', last_name)), ''), username, email) INTO follower_name
           FROM usuarios WHERE id = NEW.follower_id;
           
           INSERT INTO notifications (user_id, type, title, message, action_url)

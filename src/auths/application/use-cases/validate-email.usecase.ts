@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import type { UserRepository } from '../../domain/repositories/user.repository';
 import type { ValidateEmailDto } from '../dto/validate-email.dto';
+import { USER_REPOSITORY } from '../../tokens';
 
 @Injectable()
 export class ValidateEmailUseCase {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(@Inject(USER_REPOSITORY) private readonly userRepository: UserRepository) {}
 
   async exec(dto: ValidateEmailDto): Promise<{ exists: boolean; message: string }> {
     const user = await this.userRepository.findByEmail(dto.email);
