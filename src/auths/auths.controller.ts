@@ -6,6 +6,7 @@ import { UpdateAuthDto } from './dto/update-auth.dto';
 import { SignUpDto } from './application/dto/sign-up.dto';
 import { SignInDto } from './application/dto/sign-in.dto';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
+import { ValidateEmailDto } from './application/dto/validate-email.dto';
 
 @Controller()
 export class AuthsController {
@@ -51,5 +52,10 @@ export class AuthsController {
   @MessagePattern('usuarios.create')
   createUsuario(@Payload() dto: CreateUsuarioDto) {
     return this.authsService.createUsuario(dto);
+  }
+
+  @MessagePattern('auth.validateEmail')
+  validateEmail(@Payload() dto: ValidateEmailDto) {
+    return this.authsService.validateEmail(dto);
   }
 }
