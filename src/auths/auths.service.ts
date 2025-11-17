@@ -5,10 +5,14 @@ import { SignUpUseCase } from './application/use-cases/sign-up.usecase';
 import { SignInUseCase } from './application/use-cases/sign-in.usecase';
 import { CreateUsuarioUseCase } from './application/use-cases/create-usuario.usecase';
 import { ValidateEmailUseCase } from './application/use-cases/validate-email.usecase';
+import { RefreshTokenUseCase } from './application/use-cases/refresh-token.usecase';
+import { SignOutUseCase } from './application/use-cases/sign-out.usecase';
 import { SignUpDto } from './application/dto/sign-up.dto';
 import { SignInDto } from './application/dto/sign-in.dto';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { ValidateEmailDto } from './application/dto/validate-email.dto';
+import { RefreshTokenDto } from './application/dto/refresh-token.dto';
+import { SignOutDto } from './application/dto/sign-out.dto';
 
 @Injectable()
 export class AuthsService {
@@ -17,6 +21,8 @@ export class AuthsService {
     private readonly signInUseCase: SignInUseCase,
     private readonly createUsuarioUseCase: CreateUsuarioUseCase,
     private readonly validateEmailUseCase: ValidateEmailUseCase,
+    private readonly refreshTokenUseCase: RefreshTokenUseCase,
+    private readonly signOutUseCase: SignOutUseCase,
   ) {}
 
   // New DDD flows
@@ -34,6 +40,14 @@ export class AuthsService {
 
   validateEmail(dto: ValidateEmailDto) {
     return this.validateEmailUseCase.exec(dto);
+  }
+
+  refreshToken(dto: RefreshTokenDto) {
+    return this.refreshTokenUseCase.exec(dto);
+  }
+
+  signOut(dto: SignOutDto) {
+    return this.signOutUseCase.exec(dto);
   }
 
   // Legacy scaffolded methods (kept for compatibility/testing)

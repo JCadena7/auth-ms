@@ -35,7 +35,31 @@ export class SupabaseAuthProvider implements AuthProvider {
 
   async signOut(accessToken?: string | null): Promise<void> {
     // Supabase client signOut clears the current session; on server, it's usually stateless
-    const { error } = await this.client.auth.signOut();
+    try {
+      console.log('🔵 SupabaseAuthProvider.signOut - incoming accessToken:', accessToken ?? '<<none>>');
+      const { error } = await this.client.auth.signOut();
+      if (error) {
+        console.error('🔴 SupabaseAuthProvider.signOut - Supabase error:', error);
+        throw error;
+      }
+      console.log('✅ SupabaseAuthProvider.signOut - session cleared successfully');
+    } catch (error) {
+      console.error('🔴 SupabaseAuthProvider.signOut - unexpected failure:', error);
+      throw error;
+    }
+  }
+
+  async refresh(refreshToken: string): Promise<AuthSession> {
+    const { data, error } = await this.client.auth.refreshSession({ refresh_token: refreshToken });
     if (error) throw error;
+    if (!data.session || !data.user) {
+      throw new Error('Invalid Supabase refresh response');
+    }
+
+    return {
+      accessToken: data.session.access_token ?? null,
+      refreshToken: data.session.refresh_token ?? null,
+      userId: data.user.id,
+    };
   }
 }
