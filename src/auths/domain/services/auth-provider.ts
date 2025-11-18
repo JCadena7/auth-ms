@@ -18,4 +18,5 @@ export interface AuthProvider {
   signUp(input: SignUpInput): Promise<{ userId: string; email_confirmed?: boolean }>; // may require email confirmation
   signIn(input: SignInInput): Promise<AuthSession>;
   signOut(accessToken?: string | null): Promise<void>;
+  refresh(refreshToken: string): Promise<AuthSession>;
 }

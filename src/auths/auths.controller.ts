@@ -6,6 +6,9 @@ import { UpdateAuthDto } from './dto/update-auth.dto';
 import { SignUpDto } from './application/dto/sign-up.dto';
 import { SignInDto } from './application/dto/sign-in.dto';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
+import { ValidateEmailDto } from './application/dto/validate-email.dto';
+import { RefreshTokenDto } from './application/dto/refresh-token.dto';
+import { SignOutDto } from './application/dto/sign-out.dto';
 
 @Controller()
 export class AuthsController {
@@ -51,5 +54,22 @@ export class AuthsController {
   @MessagePattern('usuarios.create')
   createUsuario(@Payload() dto: CreateUsuarioDto) {
     return this.authsService.createUsuario(dto);
+  }
+
+  @MessagePattern('auth.validateEmail')
+  validateEmail(@Payload() dto: ValidateEmailDto) {
+    return this.authsService.validateEmail(dto);
+  }
+
+  @MessagePattern('auth.refresh')
+  refresh(@Payload() dto: RefreshTokenDto) {
+    return this.authsService.refreshToken(dto);
+  }
+
+  @MessagePattern('auth.signOut')
+  signOut(@Payload() dto: SignOutDto) {
+    const response = this.authsService.signOut(dto);
+    console.log('🔵 Auth - signOut response:', response);
+    return response;
   }
 }

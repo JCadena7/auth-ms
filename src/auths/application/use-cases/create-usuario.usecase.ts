@@ -10,10 +10,29 @@ export class CreateUsuarioUseCase {
   async exec(input: CreateUsuarioDto) {
     const user = await this.users.create({
       externalId: input.externalId ?? null,
-      nombre: input.nombre,
+      username: input.username ?? null,
       email: input.email,
+      passwordHash: input.passwordHash ?? null,
+      firstName: input.firstName,
+      lastName: input.lastName,
       rolId: input.rolId ?? null,
+      phone: input.phone ?? null,
+      avatar: input.avatar ?? null,
+      bio: input.bio ?? null,
+      status: input.status ?? 'active',
+      isVerified: input.isVerified ?? false,
     });
-    return { id: user.id, externalId: user.externalId, nombre: user.nombre, email: user.email, rolId: user.rolId };
+    
+    return { 
+      id: user.id, 
+      externalId: user.externalId, 
+      username: user.username,
+      email: user.email, 
+      firstName: user.firstName,
+      lastName: user.lastName,
+      rolId: user.rolId,
+      status: user.status,
+      isVerified: user.isVerified,
+    };
   }
 }

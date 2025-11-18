@@ -7,6 +7,9 @@ import { PgUserRepository } from './infrastructure/repositories/pg-user.reposito
 import { SignUpUseCase } from './application/use-cases/sign-up.usecase';
 import { SignInUseCase } from './application/use-cases/sign-in.usecase';
 import { CreateUsuarioUseCase } from './application/use-cases/create-usuario.usecase';
+import { ValidateEmailUseCase } from './application/use-cases/validate-email.usecase';
+import { RefreshTokenUseCase } from './application/use-cases/refresh-token.usecase';
+import { SignOutUseCase } from './application/use-cases/sign-out.usecase';
 
 @Module({
   controllers: [AuthsController],
@@ -20,6 +23,9 @@ import { CreateUsuarioUseCase } from './application/use-cases/create-usuario.use
     SignUpUseCase,
     SignInUseCase,
     CreateUsuarioUseCase,
+    ValidateEmailUseCase,
+    RefreshTokenUseCase,
+    SignOutUseCase,
   ],
 })
 export class AuthsModule {}
