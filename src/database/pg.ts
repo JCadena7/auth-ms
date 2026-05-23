@@ -1,4 +1,5 @@
 import { Pool, PoolClient, QueryResult } from 'pg';
+import { Logger } from '@nestjs/common';
 import { envs } from '../config';
 
 // ---------- Types ----------
@@ -13,8 +14,10 @@ export interface Tx {
 
 // ---------- Pool Singleton ----------
 let _pool: Pool | null = null;
+const logger = new Logger('Database');
 function getPool(): Pool {
   if (!_pool) {
+    logger.log(`Using DATABASE_URL=${envs.cadenaConexion}`);
     _pool = new Pool({ connectionString: envs.cadenaConexion });
   }
   return _pool;
